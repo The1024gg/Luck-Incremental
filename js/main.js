@@ -197,7 +197,7 @@ if(sha512_256(localStorage.supporterCode+"loader3229").slice(2) == '97b4061c3a44
         cloverGain() {
 			if(!hasUpgrade('he',9))return E(0);
 			if(player.currentChall == 11)return E(0);
-            let x = E(player.mastery_tier).div(1e12).pow(5).mul(upgradeEffect('cl',4));
+            let x = E(player.mastery_tier).div(1e12).pow(5).mul(upgradeEffect('cl',4)).mul(upgradeEffect('ue',4));
 
 if(sha512_256(localStorage.supporterCode+"loader3229").slice(2) == '97b4061c3a44e2950549613ba148eff34250441a9b3121698a15fcefdb4f5a')x = x.mul(2);
             return x
@@ -258,7 +258,35 @@ if(sha512_256(localStorage.supporterCode+"loader3229").slice(2) == '97b4061c3a44
         },
         heGain() {
 			if(player.hyper_tier==0)return E(0);
-            let x = E(player.super_tier).mul(player.hyper_tier).pow(Math.log10((player.hyper_tier+1)**3+2));
+            let x = E(player.super_tier).mul(player.hyper_tier).pow(Math.log10((player.hyper_tier+1)**3+2)).mul(upgradeEffect('ue',0));
+
+if(sha512_256(localStorage.supporterCode+"loader3229").slice(2) == '97b4061c3a44e2950549613ba148eff34250441a9b3121698a15fcefdb4f5a')x = x.mul(2);
+            return x
+        },
+    },
+    ultraT: {
+        req() {
+			if(player.ultra_tier>=8)return player.ultra_tier**3;
+			
+			return 40+10*player.ultra_tier;
+        },
+        reset() {
+            if (player.super_tier >= tmp.hTierReq) {
+                player.hyper_tier++
+				
+				
+                this.doReset()
+            }
+        },
+        doReset() {
+            player.hyper_tier = 0
+            player.hyper_essence = E(0)
+            resetUpgrades('se', [])
+            MAIN.hyperT.doReset()
+        },
+        heGain() {
+			if(player.ultra_tier==0)return E(0);
+            let x = E(player.hyper_tier).mul(player.ultra_tier).pow(Math.log10((player.ultra_tier+1)**3+2));
 
 if(sha512_256(localStorage.supporterCode+"loader3229").slice(2) == '97b4061c3a44e2950549613ba148eff34250441a9b3121698a15fcefdb4f5a')x = x.mul(2);
             return x
@@ -380,6 +408,22 @@ el.update.main = ()=>{
             )
         }
     }
+    else if (tab == 5) {
+        tmp.el.hyper_btn.setClasses({locked: player.hyper_tier < tmp.uTierReq, pres_btn: true})
+
+        tmp.el.hyper_btn.setHTML(`
+        (Require Hyper Tier ${tmp.hTierReq>1e10?BigInt(player.ultra_tier)**3n:tmp.uTierReq})<br>
+        Evolve Ultra Tier to <b>${format(player.ultra_tier+1,0)}</b>
+        `)
+
+        tmp.el.hyper_tier.setDisplay(player.ultra_tier>0)
+
+        if (player.ultra_tier>0) {
+            tmp.el.ultra_tier.setHTML(
+                `Your Ultra Tier is <h3>${format(player.Ultra_tier,0)}</h3>, which generates <h3>${tmp.ueGain.format()}</h3> Ultra Essence every second.`
+            )
+        }
+    }
 
 
     // Luck Multiplier
@@ -405,4 +449,6 @@ tmp_update.push(()=>{
     tmp.seGain = MAIN.superT.seGain()
     tmp.hTierReq = MAIN.hyperT.req()
     tmp.heGain = MAIN.hyperT.heGain()
+    tmp.uTierReq = MAIN.ultraT.req()
+    tmp.ueGain = MAIN.ultraT.heGain()
 })
