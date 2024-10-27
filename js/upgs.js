@@ -1158,6 +1158,25 @@ const UPGRADES = {
             },
         ],
     },
+        ue: {
+        tab: 5,
+        res: ["Ultra Essence",()=>[player,'ultra_essence'],"Ultra Essence"],
+        unl: ()=>player.ultra_tier>=1,
+	//auto: () => player.hyper_tier>=51,
+        ctn: [
+			{
+                desc: () => `Ultra Essence boost Mastery Clover and Hyper Essence gain.`,
+                cost: i => Decimal.pow(4,i).mul(10),
+                bulk: i => i.div(10).log(4),
+
+                effect(i) {
+                    let x = Decimal.add(1,player.hyper_essence).pow(0.5).sub(1).mul(Decimal.pow(2,i).sub(1)).add(1);
+                    return x
+                },
+                effDesc: x => formatMult(x),
+            },
+	]
+    }
 }
 
 const UPG_START_COST = (()=>{
