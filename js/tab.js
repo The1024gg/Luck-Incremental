@@ -1,6 +1,8 @@
 var tab = 0
 const TABS = {
     unl_length() {
+	        if (player.ultra_tier >= 1)return 6
+	        if (player.hyper_tier >= 40)return 6
 		if (player.hyper_tier >= 1)return 5
 		if (player.super_tier >= 100)return 5
 		if (player.super_tier >= 1)return 4
@@ -11,6 +13,7 @@ const TABS = {
         if (hasUpgrade('es',14)) u++
 		if (player.mastery_tier >= 100) u++
 		if (player.super_tier >= 100) u++
+	        if (player.hyper_tier >= 40) u++
 
         return u
     },
