@@ -36,6 +36,8 @@ function calc(dt) {
     player.super_essence = player.super_essence.add(tmp.seGain.mul(dt))
 	
     player.hyper_essence = player.hyper_essence.add(tmp.heGain.mul(dt))
+
+    player.ultra_essence = player.ultra_essence.add(tmp.ueGain.mul(dt))
 	
 	if (hasUpgrade('tp',6)||hasUpgrade('rp',5)) player.max_rarity = player.max_rarity.max(LUCK.update())
 	
